@@ -65,3 +65,16 @@ def test_app_domain_explicit_override_wins(monkeypatch: pytest.MonkeyPatch) -> N
 
     s = Settings()
     assert s.app_domain == "https://custom.example.com"
+
+
+def test_app_domain_local_dev_fallback(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("HIREWIRE_MASTER_KEY", "x" * 32)
+    monkeypatch.setenv("SWML_BASIC_AUTH_USER", "u")
+    monkeypatch.setenv("SWML_BASIC_AUTH_PASSWORD", "p")
+    monkeypatch.delenv("APP_DOMAIN", raising=False)
+    monkeypatch.delenv("REPLIT_DEPLOYMENT_URL", raising=False)
+    monkeypatch.delenv("REPLIT_DEV_DOMAIN", raising=False)
+
+    from hirewire.config import Settings
+
+    assert Settings().app_domain == "http://localhost:8000"

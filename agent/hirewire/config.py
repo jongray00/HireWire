@@ -10,7 +10,7 @@ from __future__ import annotations
 import os
 from functools import lru_cache
 
-from pydantic import Field, model_validator
+from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -49,25 +49,21 @@ class Settings(BaseSettings):
         description="Optional. Phase 5 observability.",
     )
 
-    @model_validator(mode="after")
-    def _resolve_app_domain(self) -> Settings:
+    @field_validator("app_domain", mode="before")
+    @classmethod
+    def _resolve_app_domain(cls, v: str) -> str:
         """If APP_DOMAIN unset, derive from Replit env."""
-        if self.app_domain:
-            return self
+        if v:
+            return v
 
-        replit_deployment = os.getenv("REPLIT_DEPLOYMENT_URL")
-        if replit_deployment:
-            self.app_domain = replit_deployment.rstrip("/")
-            return self
+        if (replit_deployment := os.getenv("REPLIT_DEPLOYMENT_URL")):
+            return replit_deployment.rstrip("/")
 
-        replit_dev = os.getenv("REPLIT_DEV_DOMAIN")
-        if replit_dev:
-            self.app_domain = f"https://{replit_dev.rstrip('/')}"
-            return self
+        if (replit_dev := os.getenv("REPLIT_DEV_DOMAIN")):
+            return f"https://{replit_dev.rstrip('/')}"
 
         # Local dev fallback — explicit so we don't ship hardcoded ngrok URLs.
-        self.app_domain = "http://localhost:8000"
-        return self
+        return "http://localhost:8000"
 
 
 @lru_cache(maxsize=1)
