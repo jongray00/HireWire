@@ -22,24 +22,13 @@ import uvicorn
 # Load environment variables from .env file
 load_dotenv()
 
-# Load credentials and domain from .env
-SWML_USER = os.getenv('SWML_BASIC_AUTH_USER', 'signalwire')
-SWML_PASSWORD = os.getenv('SWML_BASIC_AUTH_PASSWORD', 'signalwire')
-APP_DOMAIN = os.getenv('APP_DOMAIN', '')
+# Settings — fail fast on missing secrets.
+from hirewire.config import get_settings
 
-
-def _detect_ngrok_url() -> Optional[str]:
-    """Query ngrok local API to get the current public tunnel URL."""
-    try:
-        import urllib.request
-        resp = urllib.request.urlopen("http://localhost:4040/api/tunnels", timeout=2)
-        data = json.loads(resp.read())
-        for tunnel in data.get("tunnels", []):
-            if tunnel.get("proto") == "https":
-                return tunnel["public_url"]
-    except Exception:
-        pass
-    return None
+_settings = get_settings()
+SWML_USER = _settings.swml_basic_auth_user
+SWML_PASSWORD = _settings.swml_basic_auth_password
+APP_DOMAIN = _settings.app_domain
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -1223,16 +1212,6 @@ if __name__ == "__main__":
     logger.info(f"🌐 App Domain: {agent_credentials['app_domain']}")
     logger.info(f"🎯 Employees will be available at: /swml/{{employee_id}}")
     logger.info("=" * 60)
-
-    # Auto-detect ngrok URL if APP_DOMAIN not set
-    if not APP_DOMAIN:
-        detected = _detect_ngrok_url()
-        if detected:
-            APP_DOMAIN = detected
-            agent_credentials["app_domain"] = detected
-            logger.info(f"🔍 Auto-detected ngrok URL: {detected}")
-        else:
-            logger.warning("APP_DOMAIN not set and ngrok not detected")
 
     # Write credentials to file for web app
     try:
