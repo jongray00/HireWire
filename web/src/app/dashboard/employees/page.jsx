@@ -1728,7 +1728,7 @@ function VirtualEmployeeForm({ employee, template, onSave, onCancel }) {
                   type="url"
                   value={formData.video_idle_url}
                   onChange={(e) => handleChange("video_idle_url", e.target.value)}
-                  placeholder="/videos/hirewire_idle.mp4"
+                  placeholder="/videos/idle.mp4"
                   className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-sm"
                 />
                 <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
@@ -1743,7 +1743,7 @@ function VirtualEmployeeForm({ employee, template, onSave, onCancel }) {
                   type="url"
                   value={formData.video_talking_url}
                   onChange={(e) => handleChange("video_talking_url", e.target.value)}
-                  placeholder="/videos/hirewire_talking.mp4"
+                  placeholder="/videos/talking.mp4"
                   className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-sm"
                 />
                 <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
