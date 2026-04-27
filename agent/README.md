@@ -1,61 +1,28 @@
-# Sally Sales Agent Backend
+# HireWire Agent
 
-Python backend for the Sally Sales AI agent using SignalWire Agents SDK.
+Python FastAPI backend for HireWire — serves SWML and SWAIG endpoints for the
+multi-tenant virtual-employee demo.
 
-## Setup
-
-1. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-2. Run the agent:
-```bash
-python main.py
-```
-
-The agent will be available at `http://localhost:3030`
-
-## Exposing with ngrok
-
-To make the agent accessible to SignalWire:
+## Quickstart (local dev)
 
 ```bash
-ngrok http 3030 --domain=jonnykarate.ngrok.io
+# From the repo root
+uv sync --extra dev
+export HIREWIRE_MASTER_KEY=$(python -c 'import secrets; print(secrets.token_urlsafe(32))')
+export SWML_BASIC_AUTH_USER=signalwire
+export SWML_BASIC_AUTH_PASSWORD=$(python -c 'import secrets; print(secrets.token_urlsafe(16))')
+cd agent
+uv run uvicorn main:app --reload --port 8000
 ```
 
-The agent SWML endpoint will be at: `https://jonnykarate.ngrok.io/swml`
+## Tests
 
-## API Endpoints
+From the repo root:
 
-- `GET /swml` - SWML document (called by SignalWire)
-- `POST /swaig/{function}` - SWAIG function handlers (called by SignalWire)
-- `POST /api/update-config` - Update agent configuration from UI
-- `GET /api/config` - Get current agent configuration
-- `GET /health` - Health check
+```bash
+uv run pytest -q
+```
 
-## Configuration
-
-The agent can be dynamically configured from the web UI. When you update the prompt in the UI, it sends a request to `/api/update-config` which updates the agent's personality and behavior in real-time.
-
-## Functions
-
-The agent includes these SWAIG functions:
-
-- `route_to_order` - Route to order department
-- `route_to_schedule` - Route to scheduling/appointments
-- `route_to_support` - Route to customer support
-- `demo_order_item` - Add items to order (demo)
-- `demo_get_status` - Check order status (demo)
-- `transfer_call` - Transfer to human representative
-
-## Real-Time Events
-
-The agent sends real-time events to the UI via `swml_user_event()`:
-
-- `routing_decision` - When routing to a department
-- `item_added` - When an item is added to order
-- `status_checked` - When order status is checked
-- `transfer_initiated` - When call transfer is initiated
-
-These events are received in the browser via the SignalWire client's `userInput` event listener.
+See `../docs/superpowers/specs/2026-04-27-hirewire-design.md` for the full
+architecture and `../docs/superpowers/plans/2026-04-27-phase-1-foundation-cleanup.md`
+for the current phase plan.

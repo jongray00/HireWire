@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Sally Sales AI Agent Backend - Multi-Employee Support
+HireWire AI Agent Backend - Multi-Tenant Virtual Employee Server
 
 This backend serves multiple SWML agents, one for each virtual employee.
 Each employee has their own configuration and SWML endpoint.
@@ -11,7 +11,7 @@ import uuid
 import json
 import logging
 from datetime import datetime
-from typing import Dict, Any, Optional
+from typing import Any, Dict
 from dotenv import load_dotenv
 
 from signalwire_agents import AgentBase, SwaigFunctionResult
@@ -770,9 +770,9 @@ class VirtualEmployeeAgent(AgentBase):
 
         # Use config URLs if set, otherwise fall back to default paths
         if not idle_url and base_url:
-            idle_url = f"{base_url}/videos/sally_idle.mp4"
+            idle_url = f"{base_url}/videos/idle.mp4"
         if not talking_url and base_url:
-            talking_url = f"{base_url}/videos/sally_talking.mp4"
+            talking_url = f"{base_url}/videos/talking.mp4"
 
         if idle_url:
             self.set_param("video_idle_file", idle_url)
@@ -1114,9 +1114,9 @@ async def update_config_legacy(request: Request):
             # Create default employee
             employee_config = {
                 "id": default_id,
-                "name": "Sally Sales",
+                "name": "HireWire Demo Employee",
                 "role": "Sales Representative",
-                "greeting": "Hello! Welcome to Sally Sales.",
+                "greeting": "Hello! Welcome to HireWire.",
                 "prompt": data.get("prompt", ""),
                 "voice": "openai.nova",
                 "language": "en-US",
@@ -1164,7 +1164,7 @@ async def get_config():
     """Legacy endpoint - returns default employee config"""
     default_id = "default"
     config = employees.get(default_id, {
-        "prompt": "Welcome to Sally Sales",
+        "prompt": "Welcome to HireWire",
         "created_at": datetime.now().isoformat()
     })
 

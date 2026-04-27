@@ -1,7 +1,7 @@
 [project]
-name = "sally-sales-agent"
+name = "hirewire-agent"
 version = "0.1.0"
-description = "SignalWire AI voice agent backend serving dynamic SWML for virtual employees"
+description = "HireWire — multi-tenant SignalWire AI virtual-employee backend"
 requires-python = ">=3.11"
 dependencies = [
     "fastapi>=0.119.1",
