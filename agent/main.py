@@ -891,6 +891,12 @@ app = FastAPI(
     description="Multi-agent AI system with dynamic SWML endpoints"
 )
 
+# --- HireWire Phase 1: health + readiness endpoints ---
+from hirewire.routes import health as _hirewire_health
+
+app.include_router(_hirewire_health.router)
+# ------------------------------------------------------
+
 # CORS — set CORS_ORIGINS to a comma-separated allowlist in production.
 # Default is open for local dev; allow_credentials is False so a "*" origin is spec-valid.
 _cors_env = os.getenv("CORS_ORIGINS", "").strip()
