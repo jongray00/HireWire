@@ -69,3 +69,6 @@ web/agent-credentials.json
 
 # Local git backups (e.g. from migrations)
 .git.backup*
+
+# Git worktrees (used during multi-task implementation)
+.worktrees/
