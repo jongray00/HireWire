@@ -1,9 +1,5 @@
-"""Shared pytest fixtures for the HireWire agent test suite."""
+"""Shared pytest fixtures for the HireWire agent test suite.
 
-import pytest
-
-
-@pytest.fixture
-def anyio_backend() -> str:
-    """Force anyio-based async tests onto asyncio."""
-    return "asyncio"
+Fixtures will be added here as subsequent Phase 1 tasks (config, health
+endpoints) introduce shared test dependencies.
+"""
