@@ -1,0 +1,54 @@
+{
+  "name": "@signalwire/call-widget",
+  "private": false,
+  "public": true,
+  "version": "3.15.0",
+  "type": "module",
+  "main": "./dist/c2c-widget.umd.js",
+  "module": "./dist/c2c-widget.es.js",
+  "types": "./dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/signalwire/call-widget.git"
+  },
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/c2c-widget.es.js",
+      "require": "./dist/c2c-widget.umd.js"
+    }
+  },
+  "scripts": {
+    "dev": "vite",
+    "build:external": "vite build --config vite.config.external.ts",
+    "build:full": "vite build --config vite.config.fullbundle.ts",
+    "build": "tsc && npm run build:external && npm run build:full",
+    "preview": "vite preview",
+    "serve": "vite preview --host",
+    "push": "npm run build && npm run pushToCDN && npm run pushToCDN:dev",
+    "prepublishOnly": "npm run build",
+    "prepublish": "node ../verify-docs.js",
+    "demo": "npm run build && npm run preview",
+    "demo:dev": "npm run dev"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.0",
+    "@types/showdown": "^2.0.6",
+    "sass": "^1.86.0",
+    "terser": "^5.39.0",
+    "tslib": "^2.8.1",
+    "typescript": "~5.7.2",
+    "vite": "^6.4.1"
+  },
+  "dependencies": {
+    "@signalwire/js": "3.29.1",
+    "nanomorph": "^5.4.3",
+    "showdown": "^2.1.0"
+  },
+  "peerDependencies": {
+    "react": ">=16.8.0"
+  }
+}

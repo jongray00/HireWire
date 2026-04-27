@@ -1,0 +1,35 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl:*)",
+      "Bash(python3 -m json.tool:*)",
+      "Bash(netstat:*)",
+      "Bash(ss:*)",
+      "Read(//tmp/**)",
+      "Bash(python3:*)",
+      "Bash(pkill:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(cat:*)",
+      "Bash(rm:*)",
+      "Bash(npx tailwindcss:*)",
+      "Bash(echo:*)",
+      "Bash(printenv:*)",
+      "Bash(python:*)",
+      "Bash(npm run dev:*)",
+      "Bash(tree:*)",
+      "WebFetch(domain:github.com)",
+      "WebSearch",
+      "Bash(git fetch:*)",
+      "Bash(git branch:*)",
+      "Bash(git push:*)",
+      "Bash(git add:*)",
+      "mcp__claude_ai_SignalWire_Knowledge__start_here",
+      "mcp__claude_ai_SignalWire_Knowledge__search_docs",
+      "mcp__claude_ai_SignalWire_Knowledge__get_doc_section",
+      "Bash(mv .git .git.backup-pre-hirewire)",
+      "Bash(git init *)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

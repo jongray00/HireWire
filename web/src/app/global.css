@@ -1,0 +1,153 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/**
+ * SignalWire Theme Variables
+ * Based on SignalWire Brand Guidelines v1.0
+ */
+
+@layer base {
+  /* Force Dark Mode as Default */
+  :root {
+    /* Backgrounds - Dark mode values */
+    --bg-primary: 5, 9, 16; /* Charcoal */
+    --bg-secondary: 10, 15, 26; /* Darker variant */
+    --bg-tertiary: 26, 31, 40; /* Lighter variant */
+    --bg-hover: 51, 57, 73; /* Hover state */
+
+    /* Text Colors - Dark mode values */
+    --text-primary: 255, 255, 255; /* White */
+    --text-secondary: 190, 195, 201; /* Grey 6 */
+    --text-tertiary: 141, 150, 158; /* Grey 4 */
+    --text-disabled: 85, 96, 106; /* Grey 2 */
+
+    /* Borders & Strokes - Dark mode values */
+    --border: 58, 65, 73; /* Darker border */
+    --border-light: 85, 96, 106; /* Grey 2 */
+
+    /* Accent Colors - Pink primary in dark mode (per guidelines) */
+    --accent-primary: 247, 42, 114; /* SignalWire Pink */
+    --accent-secondary: 183, 217, 255; /* Breeze */
+    --accent-hover: 255, 90, 146; /* Lighter pink */
+  }
+
+  /* Light Mode (kept for future use but not active) */
+  .light {
+    /* Backgrounds */
+    --bg-primary: 255, 255, 255; /* White */
+    --bg-secondary: 241, 248, 255; /* Mist */
+    --bg-tertiary: 245, 247, 250; /* Grey 8 */
+    --bg-hover: 183, 217, 255; /* Breeze */
+
+    /* Text Colors */
+    --text-primary: 5, 9, 16; /* Charcoal */
+    --text-secondary: 85, 96, 106; /* Grey 2 */
+    --text-tertiary: 141, 150, 158; /* Grey 4 */
+    --text-disabled: 190, 195, 201; /* Grey 6 */
+
+    /* Borders & Strokes */
+    --border: 190, 195, 201; /* Grey 6 */
+    --border-light: 245, 247, 250; /* Grey 8 */
+
+    /* Accent Colors - Blue primary in light mode */
+    --accent-primary: 4, 78, 244; /* SignalWire Blue */
+    --accent-secondary: 247, 42, 114; /* SignalWire Pink */
+    --accent-hover: 3, 54, 171; /* Deep Sea */
+  }
+
+  /* Dark Mode - Same as root for consistency */
+  .dark {
+    /* Backgrounds */
+    --bg-primary: 5, 9, 16; /* Charcoal */
+    --bg-secondary: 10, 15, 26; /* Darker variant */
+    --bg-tertiary: 26, 31, 40; /* Lighter variant */
+    --bg-hover: 51, 57, 73; /* Hover state */
+
+    /* Text Colors */
+    --text-primary: 255, 255, 255; /* White */
+    --text-secondary: 190, 195, 201; /* Grey 6 */
+    --text-tertiary: 141, 150, 158; /* Grey 4 */
+    --text-disabled: 85, 96, 106; /* Grey 2 */
+
+    /* Borders & Strokes */
+    --border: 58, 65, 73; /* Darker border */
+    --border-light: 85, 96, 106; /* Grey 2 */
+
+    /* Accent Colors - Pink primary in dark mode (per guidelines) */
+    --accent-primary: 247, 42, 114; /* SignalWire Pink */
+    --accent-secondary: 183, 217, 255; /* Breeze */
+    --accent-hover: 255, 90, 146; /* Lighter pink */
+  }
+
+  /* Apply theme colors using RGB values */
+  body {
+    background-color: rgb(var(--bg-primary));
+    color: rgb(var(--text-primary));
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  /* Force dark background in dark mode */
+  .dark body {
+    background-color: #050910;
+  }
+
+  /* Force dark mode on HTML element */
+  html {
+    @apply dark;
+  }
+
+  input, textarea, select, button {
+    @apply outline-none focus:outline-none;
+  }
+
+  /* Futuristic glow effects */
+  @keyframes glow-pulse {
+    0%, 100% {
+      box-shadow: 0 0 20px rgba(247, 42, 114, 0.3), 0 0 40px rgba(4, 78, 244, 0.2);
+    }
+    50% {
+      box-shadow: 0 0 30px rgba(247, 42, 114, 0.5), 0 0 60px rgba(4, 78, 244, 0.3);
+    }
+  }
+
+  .glow-border {
+    position: relative;
+    border: 1px solid rgba(183, 217, 255, 0.2);
+  }
+
+  .glow-accent {
+    box-shadow: 0 0 20px rgba(247, 42, 114, 0.2), 0 0 40px rgba(4, 78, 244, 0.1);
+  }
+}
+
+/* SignalWire video container styles - matches holy-guacamole pattern */
+#video-container video,
+#video-container > div > video {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* SignalWire may inject wrapper divs */
+#video-container > div {
+  width: 100% !important;
+  height: 100% !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Hide local video if present - we only want to see the remote agent */
+#video-container video[id*="local"],
+#video-container video.localVideo {
+  display: none;
+}

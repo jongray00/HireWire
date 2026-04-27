@@ -1,0 +1,126 @@
+Warning: Expected server HTML to contain a matching <meta> in <head>.
+meta
+head
+html
+Layout@https://405f7068-fa5d-4e63-b0f6-b77003161917-00-2wo55cnnobjha.picard.replit.dev/src/app/root.tsx:398:23
+RenderedRoute@https://405f7068-fa5d-4e63-b0f6-b77003161917-00-2wo55cnnobjha.picard.replit.dev/node_modules/.vite/deps/chunk-47OWKLPC.js?v=566d3608:5301:23
+RenderErrorBoundary@https://405f7068-fa5d-4e63-b0f6-b77003161917-00-2wo55cnnobjha.picard.replit.dev/node_modules/.vite/deps/chunk-47OWKLPC.js?v=566d3608:5257:5
+DataRoutes@https://405f7068-fa5d-4e63-b0f6-b77003161917-00-2wo55cnnobjha.picard.replit.dev/node_modules/.vite/deps/chunk-47OWKLPC.js?v=566d3608:6051:20
+Router@https://405f7068-fa5d-4e63-b0f6-b77003161917-00-2wo55cnnobjha.picard.replit.dev/node_modules/.vite/deps/chunk-47OWKLPC.js?v=566d3608:6137:16
+RouterProvider@https://405f7068-fa5d-4e63-b0f6-b77003161917-00-2wo55cnnobjha.picard.replit.dev/node_modules/.vite/deps/chunk-47OWKLPC.js?v=566d3608:5856:24
+RouterProvider2
+RemixErrorBoundary@https://405f7068-fa5d-4e63-b0f6-b77003161917-00-2wo55cnnobjha.picard.replit.dev/node_modules/.vite/deps/chunk-47OWKLPC.js?v=566d3608:9062:5
+HydratedRouter@https://405f7068-fa5d-4e63-b0f6-b77003161917-00-2wo55cnnobjha.picard.replit.dev/node_modules/.vite/deps/chunk-DKRYVZRB.js?v=566d3608:171:46 injected.js:27:27
+    get injected.js:27
+    error cssRecovery.ts:180
+    get injected.js:27
+    error hydrationRecovery.ts:128
+    get injected.js:27
+    get injected.js:27
+    get injected.js:27
+    get injected.js:27
+    get injected.js:27
+    get injected.js:27
+    get injected.js:27
+    get injected.js:27
+    get injected.js:27
+    get injected.js:27
+    React 13
+    workLoop scheduler.development.js:266
+    flushWork scheduler.development.js:239
+    performWorkUntilDeadline scheduler.development.js:533
+    (Async: EventHandlerNonNull)
+    js scheduler.development.js:571
+    js scheduler.development.js:633
+    __require2 chunk-OL46QLBJ.js:21
+    js index.js:6
+    __require2 chunk-OL46QLBJ.js:21
+    React 2
+    __require2 chunk-OL46QLBJ.js:21
+    js React
+    __require2 chunk-OL46QLBJ.js:21
+    <anonymous> chunk-WY5IRSCW.mjs:1679
+Uncaught Error: Hydration failed because the initial UI does not match what was rendered on the server.
+    React 12
+    workLoop scheduler.development.js:266
+    flushWork scheduler.development.js:239
+    performWorkUntilDeadline scheduler.development.js:533
+    js scheduler.development.js:571
+    js scheduler.development.js:633
+    __require2 chunk-OL46QLBJ.js:21
+    js index.js:6
+    __require2 chunk-OL46QLBJ.js:21
+    React 2
+    __require2 chunk-OL46QLBJ.js:21
+    js React
+    __require2 chunk-OL46QLBJ.js:21
+    <anonymous> chunk-WY5IRSCW.mjs:1679
+react-dom.development.js:12507:9
+Error: Hydration failed because the initial UI does not match what was rendered on the server.
+    React 9
+    workLoop scheduler.development.js:266
+    flushWork scheduler.development.js:239
+    performWorkUntilDeadline scheduler.development.js:533
+    js scheduler.development.js:571
+    js scheduler.development.js:633
+    __require2 chunk-OL46QLBJ.js:21
+    js index.js:6
+    __require2 chunk-OL46QLBJ.js:21
+    React 2
+    __require2 chunk-OL46QLBJ.js:21
+    js React
+    __require2 chunk-OL46QLBJ.js:21
+    <anonymous> chunk-WY5IRSCW.mjs:1679
+injected.js:27:27
+Error: Hydration failed because the initial UI does not match what was rendered on the server.
+    React 9
+    workLoop scheduler.development.js:266
+    flushWork scheduler.development.js:239
+    performWorkUntilDeadline scheduler.development.js:533
+    js scheduler.development.js:571
+    js scheduler.development.js:633
+    __require2 chunk-OL46QLBJ.js:21
+    js index.js:6
+    __require2 chunk-OL46QLBJ.js:21
+    React 2
+    __require2 chunk-OL46QLBJ.js:21
+    js React
+    __require2 chunk-OL46QLBJ.js:21
+    <anonymous> chunk-WY5IRSCW.mjs:1679
+injected.js:27:27
+Warning: An error occurred during hydration. The server HTML was replaced with client content in <#document>. injected.js:27:27
+Uncaught Error: Hydration failed because the initial UI does not match what was rendered on the server.
+    React 9
+    workLoop scheduler.development.js:266
+    flushWork scheduler.development.js:239
+    performWorkUntilDeadline scheduler.development.js:533
+    js scheduler.development.js:571
+    js scheduler.development.js:633
+    __require2 chunk-OL46QLBJ.js:21
+    js index.js:6
+    __require2 chunk-OL46QLBJ.js:21
+    React 2
+    __require2 chunk-OL46QLBJ.js:21
+    js React
+    __require2 chunk-OL46QLBJ.js:21
+    <anonymous> chunk-WY5IRSCW.mjs:1679
+6 react-dom.development.js:12507:9
+Uncaught Error: There was an error while hydrating. Because the error happened outside of a Suspense boundary, the entire root will switch to client rendering.
+    React 8
+    workLoop scheduler.development.js:266
+    flushWork scheduler.development.js:239
+    performWorkUntilDeadline scheduler.development.js:533
+    js scheduler.development.js:571
+    js scheduler.development.js:633
+    __require2 chunk-OL46QLBJ.js:21
+    js index.js:6
+    __require2 chunk-OL46QLBJ.js:21
+    React 2
+    __require2 chunk-OL46QLBJ.js:21
+    js React
+    __require2 chunk-OL46QLBJ.js:21
+    <anonymous> chunk-WY5IRSCW.mjs:1679
+react-dom.development.js:19878:57
+
+​
+
