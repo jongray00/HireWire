@@ -30,7 +30,7 @@ outputType = "console"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd agent && python main.py"
+args = "cd agent && uv run uvicorn main:app --host 0.0.0.0 --port 8000 --reload"
 waitForPort = 8000
 
 [[workflows.workflow]]
@@ -59,4 +59,4 @@ externalPort = 8000
 
 [deployment]
 deploymentTarget = "vm"
-run = ["bash", "-c", "(cd agent && uvicorn main:app --host 0.0.0.0 --port 8000) & (cd web && npm run dev -- --port 5000 --host 0.0.0.0)"]
+run = ["bash", "-c", "(cd agent && uv run uvicorn main:app --host 0.0.0.0 --port 8000) & (cd web && npm run dev -- --port 5000 --host 0.0.0.0)"]
