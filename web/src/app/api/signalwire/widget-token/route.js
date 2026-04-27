@@ -82,7 +82,7 @@ export async function POST(request) {
         },
         body: JSON.stringify({
           subscriber: subscriberReference,
-          display_name: "Sally Sales User",
+          display_name: "HireWire User",
           // No channels specified - allows calling any resource
         }),
       });

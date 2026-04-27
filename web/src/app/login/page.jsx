@@ -18,7 +18,7 @@ export default function LoginPage() {
 
   // Check if already logged in
   useEffect(() => {
-    const session = localStorage.getItem("sally_sales_session");
+    const session = localStorage.getItem("hirewire_session");
     if (session) {
       try {
         const sessionData = JSON.parse(session);
@@ -28,12 +28,12 @@ export default function LoginPage() {
         }
       } catch (e) {
         // Invalid session, clear it
-        localStorage.removeItem("sally_sales_session");
+        localStorage.removeItem("hirewire_session");
       }
     }
 
     // Load saved credentials if remember me was checked
-    const savedCredentials = localStorage.getItem("sally_sales_credentials");
+    const savedCredentials = localStorage.getItem("hirewire_credentials");
     if (savedCredentials) {
       try {
         const creds = JSON.parse(savedCredentials);
@@ -66,7 +66,7 @@ export default function LoginPage() {
       }
 
       // Use the default subscriber ID
-      const DEFAULT_SUBSCRIBER_ID = "sally_sales_default_user";
+      const DEFAULT_SUBSCRIBER_ID = "hirewire_default_user";
 
       // Test credentials and create/reuse subscriber
       const response = await fetch("/api/signalwire/connect", {
@@ -92,14 +92,14 @@ export default function LoginPage() {
         subscriberData: data,
         timestamp: new Date().toISOString(),
       };
-      localStorage.setItem("sally_sales_session", JSON.stringify(sessionData));
-      localStorage.setItem("sally_sales_subscriber_id", DEFAULT_SUBSCRIBER_ID);
+      localStorage.setItem("hirewire_session", JSON.stringify(sessionData));
+      localStorage.setItem("hirewire_subscriber_id", DEFAULT_SUBSCRIBER_ID);
 
       // Save credentials if remember me is checked
       if (rememberMe) {
-        localStorage.setItem("sally_sales_credentials", JSON.stringify(credentials));
+        localStorage.setItem("hirewire_credentials", JSON.stringify(credentials));
       } else {
-        localStorage.removeItem("sally_sales_credentials");
+        localStorage.removeItem("hirewire_credentials");
       }
 
       // Redirect to dashboard
@@ -121,7 +121,7 @@ export default function LoginPage() {
             <Zap className="text-white" size={32} />
           </div>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-            Sally Sales
+            HireWire
           </h1>
           <p className="text-gray-600 dark:text-gray-400">
             AI-Powered Voice Agent Platform

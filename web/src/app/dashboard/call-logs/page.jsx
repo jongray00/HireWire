@@ -93,7 +93,7 @@ export default function CallLogsPage() {
       // Get projectId from session to scope logs
       let url = "/api/post-prompt/logs";
       try {
-        const session = JSON.parse(localStorage.getItem("sally_sales_session") || "{}");
+        const session = JSON.parse(localStorage.getItem("hirewire_session") || "{}");
         const projectId = session.credentials?.projectId;
         if (projectId) url += `?projectId=${encodeURIComponent(projectId)}`;
       } catch { /* ignore */ }

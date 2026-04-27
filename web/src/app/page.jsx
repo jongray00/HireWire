@@ -8,7 +8,7 @@ export default function Home() {
 
   useEffect(() => {
     // Check if user is logged in
-    const session = localStorage.getItem('sally_sales_session');
+    const session = localStorage.getItem('hirewire_session');
 
     if (session) {
       try {
@@ -20,7 +20,7 @@ export default function Home() {
         }
       } catch (e) {
         // Invalid session, clear it
-        localStorage.removeItem('sally_sales_session');
+        localStorage.removeItem('hirewire_session');
       }
     }
 

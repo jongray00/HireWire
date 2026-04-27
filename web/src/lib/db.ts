@@ -1,7 +1,7 @@
 /**
  * SQLite Database Module
  *
- * Initializes better-sqlite3 at web/data/sally_sales.db, creates tables,
+ * Initializes better-sqlite3 at web/data/hirewire.db, creates tables,
  * and exports query helpers for all server-side code.
  */
 
@@ -9,7 +9,7 @@ import Database from 'better-sqlite3';
 import { join } from 'path';
 import { randomUUID } from 'crypto';
 
-const DB_PATH = join(process.cwd(), 'data', 'sally_sales.db');
+const DB_PATH = join(process.cwd(), 'data', 'hirewire.db');
 
 let _db: Database.Database | null = null;
 

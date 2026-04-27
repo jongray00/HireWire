@@ -40,9 +40,9 @@ export async function POST(request) {
 
     // Use fixed default subscriber ID to prevent wasteful creation
     // This ensures we always reuse the same subscriber instead of creating expensive new ones
-    const DEFAULT_SUBSCRIBER_ID = 'sally_sales_default_user';
+    const DEFAULT_SUBSCRIBER_ID = 'hirewire_default_user';
     const subscriberId = providedSubscriberId || DEFAULT_SUBSCRIBER_ID;
-    const subscriberEmail = `${subscriberId}@sally-sales.signalwire.com`;
+    const subscriberEmail = `${subscriberId}@hirewire.signalwire.com`;
     const isReusing = !!providedSubscriberId;
 
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
@@ -109,9 +109,9 @@ export async function POST(request) {
             },
             body: JSON.stringify({
               subscriber: subscriberId,
-              alias: `Sally Sales User - ${new Date().toISOString()}`,
+              alias: `HireWire User - ${new Date().toISOString()}`,
               email: subscriberEmail,
-              display_name: `Sally Sales User`
+              display_name: `HireWire User`
             })
           });
 

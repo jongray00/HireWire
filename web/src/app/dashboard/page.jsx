@@ -32,11 +32,11 @@ export default function DashboardPage() {
   const loadDashboardData = async () => {
     try {
       // Load employees from localStorage for now
-      const employeesData = localStorage.getItem("sally_sales_employees");
+      const employeesData = localStorage.getItem("hirewire_employees");
       const employees = employeesData ? JSON.parse(employeesData) : [];
 
       // Load call history (mock for now)
-      const callHistory = localStorage.getItem("sally_sales_call_history");
+      const callHistory = localStorage.getItem("hirewire_call_history");
       const calls = callHistory ? JSON.parse(callHistory) : [];
 
       // Calculate stats
@@ -216,7 +216,7 @@ export default function DashboardPage() {
             </div>
             <div className="flex-1">
               <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-2">
-                Get Started with Sally Sales
+                Get Started with HireWire
               </h3>
               <p className="text-blue-800 dark:text-blue-200 mb-4">
                 Create your first AI voice agent in minutes. Choose from our templates or build your own from scratch.

@@ -86,7 +86,7 @@ export async function POST(request) {
     }
 
     // Create SWML Webhook resource in SignalWire
-    // Use fixed name "sally-sales" for consistent addressing at /public/sally-sales
+    // Use fixed name "hirewire-agent" for consistent addressing at /public/hirewire-agent
     const createResponse = await fetch(`${baseUrl}/api/fabric/resources/swml_webhooks`, {
       method: 'POST',
       headers: {
@@ -94,7 +94,7 @@ export async function POST(request) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        name: 'sally-sales', // Fixed name for addressing
+        name: 'hirewire-agent', // Fixed name for addressing
         display_name: displayName, // Human-readable name for UI
         primary_request_url: verifiedWebhookUrl,
         primary_request_method: 'GET'

@@ -96,7 +96,7 @@ export async function POST(request) {
             },
             body: JSON.stringify({
               subscriber: subscriberId,
-              alias: `Sally Sales Demo - ${Date.now()}`,
+              alias: `HireWire Demo - ${Date.now()}`,
               email: subscriberEmail
             })
           });
@@ -207,8 +207,8 @@ export async function POST(request) {
     console.log('🔍 COMPREHENSIVE RESOURCE SEARCH AND CLEANUP');
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
 
-    // ALWAYS search for ALL existing "sally-sales" resources to prevent duplicates
-    let sallySalesResources = [];
+    // ALWAYS search for ALL existing "hirewire-agent" resources to prevent duplicates
+    let hirewireResources = [];
     try {
       console.log('📋 Fetching ALL SWML webhook resources...');
       const listResponse = await fetch(`${baseUrl}/api/fabric/resources/swml_webhooks`, {
@@ -224,16 +224,16 @@ export async function POST(request) {
         const allResources = listData.data || [];
         console.log(`📊 Total SWML webhooks found: ${allResources.length}`);
 
-        // Filter for resources with display_name "sally-sales"
+        // Filter for resources with display_name "hirewire-agent"
         // Note: API returns name as undefined, so we must filter by display_name
-        sallySalesResources = allResources.filter(r =>
-          r.display_name === 'sally-sales' || r.name === 'sally-sales'
+        hirewireResources = allResources.filter(r =>
+          r.display_name === 'hirewire-agent' || r.name === 'hirewire-agent'
         );
-        console.log(`🎯 Resources with display_name "sally-sales": ${sallySalesResources.length}`);
+        console.log(`🎯 Resources with display_name "hirewire-agent": ${hirewireResources.length}`);
 
-        if (sallySalesResources.length > 0) {
-          console.log('📝 Found sally-sales resources:');
-          sallySalesResources.forEach((r, i) => {
+        if (hirewireResources.length > 0) {
+          console.log('📝 Found hirewire-agent resources:');
+          hirewireResources.forEach((r, i) => {
             console.log(`   ${i + 1}. ID: ${r.id}`);
             console.log(`      Display: ${r.display_name || r.name}`);
             console.log(`      URL: ${r.primary_request_url || 'N/A'}`);
@@ -248,15 +248,15 @@ export async function POST(request) {
 
     // Handle multiple resources: keep one, delete others
     let targetResourceId = null;
-    if (sallySalesResources.length > 1) {
-      console.log(`⚠️  WARNING: Found ${sallySalesResources.length} duplicate "sally-sales" resources!`);
+    if (hirewireResources.length > 1) {
+      console.log(`⚠️  WARNING: Found ${hirewireResources.length} duplicate "hirewire-agent" resources!`);
       console.log('🗑️  Deleting duplicates, keeping only the first one...');
 
-      targetResourceId = sallySalesResources[0].id;
+      targetResourceId = hirewireResources[0].id;
 
       // Delete all duplicates
-      for (let i = 1; i < sallySalesResources.length; i++) {
-        const duplicateId = sallySalesResources[i].id;
+      for (let i = 1; i < hirewireResources.length; i++) {
+        const duplicateId = hirewireResources[i].id;
         try {
           console.log(`   Deleting duplicate resource: ${duplicateId}`);
           const deleteResponse = await fetch(`${baseUrl}/api/fabric/resources/swml_webhooks/${duplicateId}`, {
@@ -278,12 +278,12 @@ export async function POST(request) {
       }
 
       resourceAction = 'cleaned_and_updated';
-    } else if (sallySalesResources.length === 1) {
-      targetResourceId = sallySalesResources[0].id;
-      console.log(`✅ Found exactly ONE "sally-sales" resource: ${targetResourceId}`);
+    } else if (hirewireResources.length === 1) {
+      targetResourceId = hirewireResources[0].id;
+      console.log(`✅ Found exactly ONE "hirewire-agent" resource: ${targetResourceId}`);
       resourceAction = 'updated';
     } else {
-      console.log('📝 No existing "sally-sales" resource found, will create new one');
+      console.log('📝 No existing "hirewire-agent" resource found, will create new one');
       resourceAction = 'created';
     }
 
@@ -298,8 +298,8 @@ export async function POST(request) {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          name: 'sally-sales', // Fixed name for consistent addressing
-          display_name: 'sally-sales', // Fixed display_name to ensure we can find it later
+          name: 'hirewire-agent', // Fixed name for consistent addressing
+          display_name: 'hirewire-agent', // Fixed display_name to ensure we can find it later
           primary_request_url: verifiedWebhookUrl,
           primary_request_method: 'GET'
         })
@@ -318,9 +318,9 @@ export async function POST(request) {
       console.log('✅ Resource updated successfully');
     } else {
       // Create new resource
-      const resourceName = 'sally-sales';
+      const resourceName = 'hirewire-agent';
       // Use fixed display_name to ensure we can find and update it later
-      const resourceDisplayName = 'sally-sales';
+      const resourceDisplayName = 'hirewire-agent';
       console.log(`🆕 Creating new resource: ${resourceName} (${resourceDisplayName})`);
 
       const createResponse = await fetch(`${baseUrl}/api/fabric/resources/swml_webhooks`, {
@@ -388,7 +388,7 @@ export async function POST(request) {
 
     // Construct the dial address
     // For SWML scripts, we can dial them via /public/{name} or /{subscriber}/{name}
-    const callTo = `/public/sally-sales`; // Using public address for simplicity
+    const callTo = `/public/hirewire-agent`; // Using public address for simplicity
 
     console.log(`SWML endpoint configured at: ${verifiedWebhookUrl}`);
     console.log(`Resource ${resourceAction}: ${resource.display_name}`);

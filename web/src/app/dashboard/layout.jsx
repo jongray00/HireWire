@@ -39,7 +39,7 @@ export default function DashboardLayout({ children }) {
   // Check authentication on mount
   useEffect(() => {
     const checkAuth = () => {
-      const sessionData = localStorage.getItem("sally_sales_session");
+      const sessionData = localStorage.getItem("hirewire_session");
 
       if (!sessionData) {
         navigate("/login");
@@ -57,7 +57,7 @@ export default function DashboardLayout({ children }) {
         setIsLoading(false);
       } catch (e) {
         console.error("Invalid session data:", e);
-        localStorage.removeItem("sally_sales_session");
+        localStorage.removeItem("hirewire_session");
         navigate("/login");
       }
     };
@@ -66,9 +66,9 @@ export default function DashboardLayout({ children }) {
   }, [navigate]);
 
   const handleLogout = () => {
-    localStorage.removeItem("sally_sales_session");
+    localStorage.removeItem("hirewire_session");
     // Optionally keep or remove credentials based on "remember me"
-    // localStorage.removeItem("sally_sales_credentials");
+    // localStorage.removeItem("hirewire_credentials");
     navigate("/login");
   };
 
@@ -106,7 +106,7 @@ export default function DashboardLayout({ children }) {
               <Zap className="text-white" size={18} />
             </div>
             <span className="font-bold text-gray-900 dark:text-white text-lg">
-              Sally Sales
+              HireWire
             </span>
           </div>
           <button

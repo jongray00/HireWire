@@ -71,7 +71,7 @@ export default function ResourcesPage() {
       refreshState(true);
 
       // Get credentials from session
-      const session = localStorage.getItem("sally_sales_session");
+      const session = localStorage.getItem("hirewire_session");
       if (!session) {
         alert("Please log in first");
         navigate("/login");
@@ -236,7 +236,7 @@ function ResourceCard({ resource, onUpdate }) {
     try {
       setUpdating(true);
 
-      const session = localStorage.getItem("sally_sales_session");
+      const session = localStorage.getItem("hirewire_session");
       if (!session) {
         alert("Please log in first");
         return;

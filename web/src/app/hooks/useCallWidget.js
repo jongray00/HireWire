@@ -26,7 +26,7 @@ export function useCallWidget() {
       setError(null);
 
       // Get session data
-      const session = localStorage.getItem("sally_sales_session");
+      const session = localStorage.getItem("hirewire_session");
       if (!session) {
         navigate("/login");
         return false;
@@ -36,7 +36,7 @@ export function useCallWidget() {
       const credentials = sessionData.credentials;
 
       // Use the persistent subscriber from login session
-      const subscriberReference = sessionData.subscriberData?.subscriberId || "sally_sales_default_user";
+      const subscriberReference = sessionData.subscriberData?.subscriberId || "hirewire_default_user";
 
       console.log("Initiating call with subscriber:", subscriberReference);
       console.log("Calling destination:", destination);

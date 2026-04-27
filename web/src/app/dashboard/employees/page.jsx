@@ -265,7 +265,7 @@ function isEmployeeStale(employee, currentDomain) {
 
 function getCredentials() {
   try {
-    const session = localStorage.getItem("sally_sales_session");
+    const session = localStorage.getItem("hirewire_session");
     if (!session) return null;
     return JSON.parse(session).credentials;
   } catch {
@@ -454,7 +454,7 @@ export default function EmployeesPage() {
       // Load from API (DB-backed)
       let projectId;
       try {
-        const session = JSON.parse(localStorage.getItem("sally_sales_session") || "{}");
+        const session = JSON.parse(localStorage.getItem("hirewire_session") || "{}");
         projectId = session.credentials?.projectId;
       } catch { /* ignore */ }
 
@@ -466,17 +466,17 @@ export default function EmployeesPage() {
       if (data.success && data.employees) {
         setEmployees(data.employees);
         // Keep localStorage in sync as a client-side cache
-        localStorage.setItem("sally_sales_employees", JSON.stringify(data.employees));
+        localStorage.setItem("hirewire_employees", JSON.stringify(data.employees));
       } else {
         // Fallback to localStorage
-        const employeesData = localStorage.getItem("sally_sales_employees");
+        const employeesData = localStorage.getItem("hirewire_employees");
         setEmployees(employeesData ? JSON.parse(employeesData) : []);
       }
     } catch (error) {
       console.error("Failed to load employees:", error);
       // Fallback to localStorage
       try {
-        const employeesData = localStorage.getItem("sally_sales_employees");
+        const employeesData = localStorage.getItem("hirewire_employees");
         setEmployees(employeesData ? JSON.parse(employeesData) : []);
       } catch {
         setEmployees([]);
@@ -487,7 +487,7 @@ export default function EmployeesPage() {
   };
 
   const saveEmployees = (newEmployees) => {
-    localStorage.setItem("sally_sales_employees", JSON.stringify(newEmployees));
+    localStorage.setItem("hirewire_employees", JSON.stringify(newEmployees));
     setEmployees(newEmployees);
     syncEmployeesToServer(newEmployees);
   };
@@ -497,7 +497,7 @@ export default function EmployeesPage() {
   const syncEmployeesToServer = (emps) => {
     let projectId;
     try {
-      const session = JSON.parse(localStorage.getItem("sally_sales_session") || "{}");
+      const session = JSON.parse(localStorage.getItem("hirewire_session") || "{}");
       projectId = session.credentials?.projectId;
     } catch { /* ignore */ }
 
@@ -1728,7 +1728,7 @@ function VirtualEmployeeForm({ employee, template, onSave, onCancel }) {
                   type="url"
                   value={formData.video_idle_url}
                   onChange={(e) => handleChange("video_idle_url", e.target.value)}
-                  placeholder="/videos/sally_idle.mp4"
+                  placeholder="/videos/hirewire_idle.mp4"
                   className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-sm"
                 />
                 <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
@@ -1743,7 +1743,7 @@ function VirtualEmployeeForm({ employee, template, onSave, onCancel }) {
                   type="url"
                   value={formData.video_talking_url}
                   onChange={(e) => handleChange("video_talking_url", e.target.value)}
-                  placeholder="/videos/sally_talking.mp4"
+                  placeholder="/videos/hirewire_talking.mp4"
                   className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-sm"
                 />
                 <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
