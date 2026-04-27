@@ -27,7 +27,7 @@ function getAgentCredentials() {
 /**
  * Extracts the base URL from the incoming request
  * @param {Request} request - The incoming request object
- * @returns {string} The base URL (e.g., 'https://example.com' or 'https://example.com/demo-ivr')
+ * @returns {string} The base URL (e.g., 'https://example.com')
  */
 export function getBaseUrl(request) {
   // First check if there's an APP_DOMAIN in agent credentials (from .env)
