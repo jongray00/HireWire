@@ -31,7 +31,7 @@ export SWML_BASIC_AUTH_PASSWORD=$(python -c 'import secrets; print(secrets.token
 
 # Frontend
 cd web
-npm install --legacy-peer-deps
+npm install
 npm run dev
 ```
 
