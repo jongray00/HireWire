@@ -5,6 +5,7 @@ description = "SignalWire AI voice agent backend serving dynamic SWML for virtua
 requires-python = ">=3.11"
 dependencies = [
     "fastapi>=0.119.1",
+    "pydantic-settings>=2.5.0",
     "python-dotenv>=1.1.1",
     "sendgrid>=6.10.0",
     "signalwire-agents>=1.1.0",
