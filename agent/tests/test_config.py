@@ -78,3 +78,19 @@ def test_app_domain_local_dev_fallback(monkeypatch: pytest.MonkeyPatch) -> None:
     from hirewire.config import Settings
 
     assert Settings().app_domain == "http://localhost:8000"
+
+
+def test_env_example_lists_required_keys() -> None:
+    """`.env.example` must enumerate every required Replit Secret."""
+    from pathlib import Path
+
+    env_path = Path(__file__).resolve().parent.parent / ".env.example"
+    assert env_path.exists(), f"{env_path} must exist"
+    content = env_path.read_text()
+    for key in (
+        "HIREWIRE_MASTER_KEY",
+        "SWML_BASIC_AUTH_USER",
+        "SWML_BASIC_AUTH_PASSWORD",
+        "APP_DOMAIN",
+    ):
+        assert key in content, f"{key} missing from .env.example"
