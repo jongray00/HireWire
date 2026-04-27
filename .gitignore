@@ -66,3 +66,6 @@ web/agent-credentials.json
 .env.development.local
 .env.test.local
 .env.production.local
+
+# Local git backups (e.g. from migrations)
+.git.backup*
