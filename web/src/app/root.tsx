@@ -23,21 +23,13 @@ import { initCSSMonitor, checkCSSLoaded, forceInjectStyles } from './utils/cssRe
 import { initHydrationRecovery, cleanDOMForHydration } from './utils/hydrationRecovery';
 import { injectCriticalStyles } from './utils/inlineStyles';
 
-import fetch from '@/__create/fetch';
 // SessionProvider removed - not needed for demo
 import { useNavigate } from 'react-router';
 import { serializeError } from 'serialize-error';
 import { Toaster } from 'sonner';
 // @ts-ignore
 import { LoadFonts } from 'virtual:load-fonts.jsx';
-import { HotReloadIndicator } from '../__create/HotReload';
-import { useSandboxStore } from '../__create/hmr-sandbox-store';
 import type { Route } from './+types/root';
-import { useDevServerHeartbeat } from '../__create/useDevServerHeartbeat';
-
-if (globalThis.window && globalThis.window !== undefined) {
-  globalThis.window.fetch = fetch;
-}
 
 function SharedErrorBoundary({
   isOpen,
@@ -283,38 +275,7 @@ const useHandshakeParent = () => {
   }, [isHmrConnected]);
 };
 
-const useCodeGen = () => {
-  const { startCodeGen, setCodeGenGenerating, completeCodeGen, errorCodeGen, stopCodeGen } =
-    useSandboxStore();
-
-  useEffect(() => {
-    const handleMessage = (event: MessageEvent) => {
-      const { type } = event.data;
-
-      switch (type) {
-        case 'sandbox:web:codegen:started':
-          startCodeGen();
-          break;
-        case 'sandbox:web:codegen:generating':
-          setCodeGenGenerating();
-          break;
-        case 'sandbox:web:codegen:complete':
-          completeCodeGen();
-          break;
-        case 'sandbox:web:codegen:error':
-          errorCodeGen();
-          break;
-        case 'sandbox:web:codegen:stopped':
-          stopCodeGen();
-          break;
-      }
-    };
-    window.addEventListener('message', handleMessage);
-    return () => {
-      window.removeEventListener('message', handleMessage);
-    };
-  }, [startCodeGen, setCodeGenGenerating, completeCodeGen, errorCodeGen, stopCodeGen]);
-};
+// useCodeGen removed — Replit sandbox codegen messages no longer handled.
 
 const useRefresh = () => {
   useEffect(() => {
@@ -335,9 +296,7 @@ const useRefresh = () => {
 
 export function Layout({ children }: { children: ReactNode }) {
   useHandshakeParent();
-  useCodeGen();
   useRefresh();
-  useDevServerHeartbeat();
   useSuppressHydrationWarning();
   const navigate = useNavigate();
   const location = useLocation();
@@ -402,7 +361,6 @@ export function Layout({ children }: { children: ReactNode }) {
       <head suppressHydrationWarning>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/src/__create/favicon.png" />
         <title>SignalWire AI IVR Demo</title>
         <script src="https://cdn.jsdelivr.net/npm/@signalwire/call-widget/dist/c2c-widget-full.umd.min.js"></script>
         <script dangerouslySetInnerHTML={{
@@ -421,7 +379,6 @@ export function Layout({ children }: { children: ReactNode }) {
               <HydrationErrorBoundary>
                 {children}
               </HydrationErrorBoundary>
-              <HotReloadIndicator />
               <Toaster position="bottom-right" />
             </ThemeProvider>
           )} />
