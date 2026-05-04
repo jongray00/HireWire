@@ -1,5 +1,9 @@
-signalwire-agents>=1.1.0
-fastapi>=0.104.0
-uvicorn[standard]>=0.24.0
-python-dotenv>=1.0.0
+# Generated from ../pyproject.toml — keep version floors in sync.
+# Regenerate with: uv pip compile pyproject.toml -o agent/requirements.txt
+cryptography==44.0.0
+fastapi>=0.119.1
+python-dotenv>=1.1.1
 sendgrid>=6.10.0
+signalwire-agents>=1.1.0
+structlog>=25.1.0
+uvicorn[standard]>=0.38.0

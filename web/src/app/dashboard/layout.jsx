@@ -65,10 +65,15 @@ export default function DashboardLayout({ children }) {
     checkAuth();
   }, [navigate]);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     localStorage.removeItem("sally_sales_session");
-    // Optionally keep or remove credentials based on "remember me"
-    // localStorage.removeItem("sally_sales_credentials");
+    // Best-effort: also clear the multi-tenant JWT cookie. Failure here
+    // shouldn't block redirect since localStorage was already cleared.
+    try {
+      await fetch("/api/auth/logout", { method: "POST" });
+    } catch (e) {
+      console.warn("[dashboard] /api/auth/logout failed:", e);
+    }
     navigate("/login");
   };
 

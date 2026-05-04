@@ -95,6 +95,24 @@ export default function LoginPage() {
       localStorage.setItem("sally_sales_session", JSON.stringify(sessionData));
       localStorage.setItem("sally_sales_subscriber_id", DEFAULT_SUBSCRIBER_ID);
 
+      // Multi-tenant auth: mint a JWT session cookie. Best-effort during
+      // transition — if /api/auth/login is unavailable (agent backend not
+      // running, env vars unset), legacy localStorage session keeps the
+      // dashboard working. Once Phase 3 migrates dashboard reads to the
+      // projects table, this becomes the only auth path.
+      try {
+        const authRes = await fetch("/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(credentials),
+        });
+        if (!authRes.ok) {
+          console.warn("[login] /api/auth/login non-OK:", authRes.status);
+        }
+      } catch (e) {
+        console.warn("[login] /api/auth/login unreachable:", e);
+      }
+
       // Save credentials if remember me is checked
       if (rememberMe) {
         localStorage.setItem("sally_sales_credentials", JSON.stringify(credentials));
@@ -121,7 +139,7 @@ export default function LoginPage() {
             <Zap className="text-white" size={32} />
           </div>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-            Sally Sales
+            HireWire
           </h1>
           <p className="text-gray-600 dark:text-gray-400">
             AI-Powered Voice Agent Platform

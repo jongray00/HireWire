@@ -37,8 +37,8 @@ def _detect_ngrok_url() -> Optional[str]:
         for tunnel in data.get("tunnels", []):
             if tunnel.get("proto") == "https":
                 return tunnel["public_url"]
-    except Exception:
-        pass
+    except Exception as e:
+        logger.debug(f"ngrok tunnel detection skipped: {e}")
     return None
 
 # Configure logging
@@ -903,6 +903,51 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+@app.on_event("startup")
+async def _on_startup():
+    """Initialize agent state on every startup path (uvicorn CLI or `python main.py`).
+
+    Writes a credentials file the frontend reads to learn the agent's basic-auth
+    creds and public domain. Also auto-detects an ngrok tunnel when APP_DOMAIN
+    is unset (handy for local dev).
+    """
+    global APP_DOMAIN
+
+    logger.info("=" * 60)
+    logger.info("🚀 Starting Virtual Employees Backend")
+    logger.info("=" * 60)
+    logger.info("📋 Multi-Agent System Initialized")
+    logger.info(f"🔐 Credentials: {agent_credentials['username']}:***")
+    logger.info(f"🌐 App Domain: {agent_credentials['app_domain'] or '(unset)'}")
+    logger.info("🎯 Employees will be available at: /swml/{employee_id}")
+    logger.info("=" * 60)
+
+    if not APP_DOMAIN:
+        detected = _detect_ngrok_url()
+        if detected:
+            APP_DOMAIN = detected
+            agent_credentials["app_domain"] = detected
+            logger.info(f"🔍 Auto-detected ngrok URL: {detected}")
+        else:
+            logger.warning("APP_DOMAIN not set and ngrok not detected")
+
+    try:
+        credentials_file = os.path.join(os.path.dirname(__file__), '..', 'web', 'agent-credentials.json')
+        swml_path = "/swml/default"
+        with open(credentials_file, 'w') as f:
+            json.dump({
+                "username": agent_credentials["username"],
+                "password": agent_credentials["password"],
+                "app_domain": agent_credentials["app_domain"],
+                "swml_url": f"{agent_credentials['app_domain']}{swml_path}" if agent_credentials['app_domain'] else swml_path,
+                "timestamp": datetime.now().isoformat()
+            }, f, indent=2)
+        logger.info(f"✅ Wrote credentials to: {credentials_file}")
+    except Exception as e:
+        logger.warning(f"Could not write credentials file: {e}")
+
+
 def _remount_employee_router(employee_id: str, agent: VirtualEmployeeAgent):
     """Remove old routes for an employee and mount the new agent's router."""
     prefix = f"/swml/{employee_id}"
@@ -1207,42 +1252,9 @@ async def health_check():
     }
 
 
-# Main entry point
+# Main entry point — kept for `python main.py`. Production / Replit deploys use
+# `uvicorn main:app` directly; the startup logic lives in @app.on_event("startup")
+# so both paths share the same initialization.
 if __name__ == "__main__":
-    logger.info("=" * 60)
-    logger.info("🚀 Starting Virtual Employees Backend")
-    logger.info("=" * 60)
-    logger.info(f"📋 Multi-Agent System Initialized")
-    logger.info(f"🔐 Credentials: {agent_credentials['username']}:***")
-    logger.info(f"🌐 App Domain: {agent_credentials['app_domain']}")
-    logger.info(f"🎯 Employees will be available at: /swml/{{employee_id}}")
-    logger.info("=" * 60)
-
-    # Auto-detect ngrok URL if APP_DOMAIN not set
-    if not APP_DOMAIN:
-        detected = _detect_ngrok_url()
-        if detected:
-            APP_DOMAIN = detected
-            agent_credentials["app_domain"] = detected
-            logger.info(f"🔍 Auto-detected ngrok URL: {detected}")
-        else:
-            logger.warning("APP_DOMAIN not set and ngrok not detected")
-
-    # Write credentials to file for web app
-    try:
-        credentials_file = os.path.join(os.path.dirname(__file__), '..', 'web', 'agent-credentials.json')
-        swml_path = "/swml/default"
-        with open(credentials_file, 'w') as f:
-            json.dump({
-                "username": agent_credentials["username"],
-                "password": agent_credentials["password"],
-                "app_domain": agent_credentials["app_domain"],
-                "swml_url": f"{agent_credentials['app_domain']}{swml_path}" if agent_credentials['app_domain'] else swml_path,
-                "timestamp": datetime.now().isoformat()
-            }, f, indent=2)
-        logger.info(f"✅ Wrote credentials to: {credentials_file}")
-    except Exception as e:
-        logger.warning(f"Could not write credentials file: {e}")
-
-    # Start server
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    port = int(os.getenv("AGENT_PORT", "8000"))
+    uvicorn.run(app, host="0.0.0.0", port=port)

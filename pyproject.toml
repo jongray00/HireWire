@@ -1,12 +1,31 @@
 [project]
-name = "sally-sales-agent"
+name = "hirewire-agent"
 version = "0.1.0"
-description = "SignalWire AI voice agent backend serving dynamic SWML for virtual employees"
+description = "HireWire — SignalWire AI voice agent backend serving dynamic SWML for virtual employees"
 requires-python = ">=3.11"
 dependencies = [
+    "cryptography==44.0.0",
     "fastapi>=0.119.1",
     "python-dotenv>=1.1.1",
     "sendgrid>=6.10.0",
     "signalwire-agents>=1.1.0",
+    "structlog>=25.1.0",
     "uvicorn[standard]>=0.38.0",
 ]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==8.3.4",
+    "pytest-asyncio==0.25.2",
+    "pytest-cov==6.0.0",
+    "respx==0.22.0",
+    "freezegun==1.5.1",
+    "httpx==0.28.1",
+]
+
+[tool.setuptools]
+packages = ["agent", "agent.lib", "agent.migrations", "agent.tests"]
+include-package-data = true
+
+[tool.setuptools.package-data]
+"agent.migrations" = ["*.sql"]

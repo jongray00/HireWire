@@ -26,9 +26,12 @@ async function findRouteFiles(dir: string): Promise<string[]> {
 
       if (statResult.isDirectory()) {
         routes = routes.concat(await findRouteFiles(filePath));
-      } else if (file === 'route.js') {
-        // Handle root route.js specially
-        if (filePath === join(__dirname, 'route.js')) {
+      } else if (file === 'route.js' || file === 'route.ts') {
+        // Handle root route specially (either extension)
+        if (
+          filePath === join(__dirname, 'route.js') ||
+          filePath === join(__dirname, 'route.ts')
+        ) {
           routes.unshift(filePath); // Add to beginning of array
         } else {
           routes.push(filePath);
@@ -160,7 +163,7 @@ await registerRoutes();
 
 // Hot reload routes in development
 if (import.meta.env.DEV) {
-  import.meta.glob('../src/app/api/**/route.js', {
+  import.meta.glob('../src/app/api/**/route.{js,ts}', {
     eager: true,
   });
   if (import.meta.hot) {

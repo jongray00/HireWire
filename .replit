@@ -1,3 +1,5 @@
+# `web` provides Replit's webview preview; nodejs-20 + python-3.11 supply the
+# runtimes for /web and /agent respectively.
 modules = ["nodejs-20", "web", "python-3.11"]
 [agent]
 expertMode = true

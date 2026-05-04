@@ -80,7 +80,7 @@ export default function DashboardPage() {
       description: "Add a new AI voice agent",
       icon: Plus,
       color: "blue",
-      action: () => navigate("/dashboard/employees?new=true"),
+      action: () => navigate("/dashboard/templates"),
     },
     {
       title: "Browse Templates",
@@ -173,7 +173,7 @@ export default function DashboardPage() {
                 No recent activity
               </p>
               <button
-                onClick={() => navigate("/dashboard/employees?new=true")}
+                onClick={() => navigate("/dashboard/templates")}
                 className="inline-flex items-center space-x-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
               >
                 <Plus size={18} />

@@ -384,7 +384,17 @@ export default function EmployeesPage() {
 
   const loadPhoneNumbers = async () => {
     try {
-      const res = await fetch("/api/signalwire/phone-numbers");
+      const creds = getCredentials();
+      if (!creds?.spaceUrl || !creds?.projectId || !creds?.apiToken) {
+        setPhoneNumbers([]);
+        return;
+      }
+      const qs = new URLSearchParams({
+        spaceUrl: creds.spaceUrl,
+        projectId: creds.projectId,
+        apiToken: creds.apiToken,
+      });
+      const res = await fetch(`/api/signalwire/phone-numbers?${qs}`);
       if (res.ok) {
         const data = await res.json();
         if (data.success) setPhoneNumbers(data.phoneNumbers || []);
@@ -745,7 +755,7 @@ export default function EmployeesPage() {
           </p>
         </div>
         <button
-          onClick={() => setShowCreateForm(true)}
+          onClick={() => navigate("/dashboard/templates")}
           className="inline-flex items-center space-x-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors shadow-lg"
         >
           <Plus size={20} />
@@ -796,7 +806,7 @@ export default function EmployeesPage() {
             </p>
             {!searchQuery && (
               <button
-                onClick={() => setShowCreateForm(true)}
+                onClick={() => navigate("/dashboard/templates")}
                 className="inline-flex items-center space-x-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
               >
                 <Plus size={20} />
@@ -1324,11 +1334,11 @@ function VirtualEmployeeForm({ employee, template, onSave, onCancel }) {
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Greeting Message *
                 </label>
-                <input
-                  type="text"
+                <textarea
                   value={formData.greeting}
                   onChange={(e) => handleChange("greeting", e.target.value)}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white ${
+                  rows={4}
+                  className={`w-full px-4 py-3 text-base leading-relaxed border rounded-lg resize-y min-h-[7rem] focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white ${
                     errors.greeting
                       ? "border-red-500"
                       : "border-gray-300 dark:border-gray-600"
@@ -1587,6 +1597,7 @@ function VirtualEmployeeForm({ employee, template, onSave, onCancel }) {
                         label="SMS From Number"
                         placeholder="+15551234567"
                         credentials={credentials}
+                        source="campaign-registry"
                       />
                     </div>
                   )}
@@ -1595,28 +1606,28 @@ function VirtualEmployeeForm({ employee, template, onSave, onCancel }) {
 
               {/* Business Hours Configuration */}
               {formData.enabled_functions?.includes('check_business_hours') && (
-                <div style={{ marginTop: '1rem', padding: '1rem', backgroundColor: 'rgba(99, 102, 241, 0.08)', borderRadius: '0.5rem', border: '1px solid rgba(99, 102, 241, 0.25)' }}>
-                  <h4 style={{ fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.75rem' }}>Business Hours</h4>
-                  <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                <div className="mt-4 p-4 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800">
+                  <h4 className="text-sm font-semibold text-blue-900 dark:text-blue-100 mb-3">Business Hours</h4>
+                  <div className="flex flex-wrap items-end gap-4">
                     <div>
-                      <label style={{ fontSize: '0.8rem', fontWeight: 500 }}>Open</label>
+                      <label className="block text-xs font-medium text-gray-700 dark:text-gray-200 mb-1">Open</label>
                       <select
                         value={formData.business_hours_start}
                         onChange={(e) => setFormData(prev => ({ ...prev, business_hours_start: parseInt(e.target.value) }))}
-                        style={{ display: 'block', padding: '0.375rem', borderRadius: '0.25rem', border: '1px solid #d1d5db', fontSize: '0.85rem' }}
+                        className="px-3 py-1.5 text-sm rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       >
                         {Array.from({ length: 24 }, (_, i) => (
                           <option key={i} value={i}>{`${i % 12 || 12}:00 ${i < 12 ? 'AM' : 'PM'}`}</option>
                         ))}
                       </select>
                     </div>
-                    <span style={{ marginTop: '1rem' }}>to</span>
+                    <span className="text-sm text-gray-700 dark:text-gray-300 pb-1.5">to</span>
                     <div>
-                      <label style={{ fontSize: '0.8rem', fontWeight: 500 }}>Close</label>
+                      <label className="block text-xs font-medium text-gray-700 dark:text-gray-200 mb-1">Close</label>
                       <select
                         value={formData.business_hours_end}
                         onChange={(e) => setFormData(prev => ({ ...prev, business_hours_end: parseInt(e.target.value) }))}
-                        style={{ display: 'block', padding: '0.375rem', borderRadius: '0.25rem', border: '1px solid #d1d5db', fontSize: '0.85rem' }}
+                        className="px-3 py-1.5 text-sm rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       >
                         {Array.from({ length: 24 }, (_, i) => (
                           <option key={i} value={i}>{`${i % 12 || 12}:00 ${i < 12 ? 'AM' : 'PM'}`}</option>
@@ -1624,36 +1635,35 @@ function VirtualEmployeeForm({ employee, template, onSave, onCancel }) {
                       </select>
                     </div>
                   </div>
-                  <div style={{ marginTop: '0.5rem' }}>
-                    <label style={{ fontSize: '0.8rem', fontWeight: 500 }}>Open Days</label>
-                    <div style={{ display: 'flex', gap: '0.25rem', marginTop: '0.25rem' }}>
-                      {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, idx) => (
-                        <button
-                          key={day}
-                          type="button"
-                          onClick={() => {
-                            setFormData(prev => {
-                              const days = prev.business_days || [];
-                              return {
-                                ...prev,
-                                business_days: days.includes(idx) ? days.filter(d => d !== idx) : [...days, idx].sort(),
-                              };
-                            });
-                          }}
-                          style={{
-                            padding: '0.25rem 0.5rem',
-                            borderRadius: '0.25rem',
-                            border: '1px solid #d1d5db',
-                            fontSize: '0.75rem',
-                            fontWeight: 500,
-                            backgroundColor: (formData.business_days || []).includes(idx) ? '#044cf6' : 'white',
-                            color: (formData.business_days || []).includes(idx) ? 'white' : '#333',
-                            cursor: 'pointer',
-                          }}
-                        >
-                          {day}
-                        </button>
-                      ))}
+                  <div className="mt-3">
+                    <label className="block text-xs font-medium text-gray-700 dark:text-gray-200 mb-1">Open Days</label>
+                    <div className="flex gap-1.5 flex-wrap">
+                      {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, idx) => {
+                        const active = (formData.business_days || []).includes(idx);
+                        return (
+                          <button
+                            key={day}
+                            type="button"
+                            onClick={() => {
+                              setFormData(prev => {
+                                const days = prev.business_days || [];
+                                return {
+                                  ...prev,
+                                  business_days: days.includes(idx) ? days.filter(d => d !== idx) : [...days, idx].sort(),
+                                };
+                              });
+                            }}
+                            className={
+                              "px-3 py-1 text-xs font-medium rounded-md border transition-colors " +
+                              (active
+                                ? "bg-blue-600 text-white border-blue-600 hover:bg-blue-700"
+                                : "bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600")
+                            }
+                          >
+                            {day}
+                          </button>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>
@@ -1661,37 +1671,37 @@ function VirtualEmployeeForm({ employee, template, onSave, onCancel }) {
 
               {/* Email Configuration (SendGrid) */}
               {formData.enabled_functions?.includes('send_email') && (
-                <div style={{ marginTop: '1rem', padding: '1rem', backgroundColor: 'rgba(99, 102, 241, 0.08)', borderRadius: '0.5rem', border: '1px solid rgba(99, 102, 241, 0.25)' }}>
-                  <h4 style={{ fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.75rem' }}>Email Configuration (SendGrid)</h4>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                <div className="mt-4 p-4 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800">
+                  <h4 className="text-sm font-semibold text-blue-900 dark:text-blue-100 mb-3">Email Configuration (SendGrid)</h4>
+                  <div className="flex flex-col gap-3">
                     <div>
-                      <label style={{ fontSize: '0.8rem', fontWeight: 500 }}>SendGrid API Key</label>
+                      <label className="block text-xs font-medium text-gray-700 dark:text-gray-200 mb-1">SendGrid API Key</label>
                       <input
                         type="password"
                         value={formData.sendgrid_api_key}
                         onChange={(e) => setFormData(prev => ({ ...prev, sendgrid_api_key: e.target.value, email_provider: e.target.value ? 'sendgrid' : '' }))}
                         placeholder="SG.xxxxxxxxxx"
-                        style={{ display: 'block', width: '100%', padding: '0.5rem', borderRadius: '0.375rem', border: '1px solid #d1d5db', fontSize: '0.85rem' }}
+                        className="block w-full px-3 py-2 text-sm rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
                     </div>
                     <div>
-                      <label style={{ fontSize: '0.8rem', fontWeight: 500 }}>From Email Address</label>
+                      <label className="block text-xs font-medium text-gray-700 dark:text-gray-200 mb-1">From Email Address</label>
                       <input
                         type="email"
                         value={formData.email_from_address}
                         onChange={(e) => setFormData(prev => ({ ...prev, email_from_address: e.target.value }))}
                         placeholder="noreply@yourcompany.com"
-                        style={{ display: 'block', width: '100%', padding: '0.5rem', borderRadius: '0.375rem', border: '1px solid #d1d5db', fontSize: '0.85rem' }}
+                        className="block w-full px-3 py-2 text-sm rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
                     </div>
                     <div>
-                      <label style={{ fontSize: '0.8rem', fontWeight: 500 }}>From Name (optional)</label>
+                      <label className="block text-xs font-medium text-gray-700 dark:text-gray-200 mb-1">From Name (optional)</label>
                       <input
                         type="text"
                         value={formData.email_from_name}
                         onChange={(e) => setFormData(prev => ({ ...prev, email_from_name: e.target.value }))}
                         placeholder="Defaults to employee name"
-                        style={{ display: 'block', width: '100%', padding: '0.5rem', borderRadius: '0.375rem', border: '1px solid #d1d5db', fontSize: '0.85rem' }}
+                        className="block w-full px-3 py-2 text-sm rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
                     </div>
                   </div>

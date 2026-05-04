@@ -1,25 +1,25 @@
-# Sally Sales - Complete Architecture Guide
+# HireWire - Complete Architecture Guide
 
 ## Address Configuration & Calling Flow
 
 ### Question: What is the name of the address being dialed?
 
-**Answer**: `sally-agent`
+**Answer**: `hirewire-agent`
 
 This is configured in `/web/src/app/api/signalwire/generate-agent/route.js`:
 
 ```javascript
-const addressName = 'sally-agent';  // Line 94
+const addressName = 'hirewire-agent';  // Line 94
 ```
 
 ### Complete Dial Format
 
 ```javascript
 // Full address format:
-const dialAddress = `/${subscriberId}/sally-agent`;
+const dialAddress = `/${subscriberId}/hirewire-agent`;
 
 // Example:
-// "/subscriber_1729377893_abc123/sally-agent"
+// "/subscriber_1729377893_abc123/hirewire-agent"
 ```
 
 ---
@@ -56,8 +56,8 @@ client.on('userInput', (event) => {
 ```javascript
 // In: /web/src/components/demo-ivr/AdvancedCallControls.jsx (startCall function)
 
-const agentAddress = `/${subscriberId}/sally-agent`;
-// Example: "/subscriber_1729377893_abc123/sally-agent"
+const agentAddress = `/${subscriberId}/hirewire-agent`;
+// Example: "/subscriber_1729377893_abc123/hirewire-agent"
 
 const session = await client.dial({
     to: agentAddress,           // The address we created in SignalWire
@@ -80,26 +80,26 @@ await session.start();  // Start the call
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│ Step 1: Browser dials "/subscriber_1729377893_abc123/sally-agent"  │
+│ Step 1: Browser dials "/subscriber_1729377893_abc123/hirewire-agent"  │
 └──────────────────┬──────────────────────────────────────────────────┘
                    │
 ┌──────────────────▼──────────────────────────────────────────────────┐
 │ Step 2: SignalWire Cloud looks up address in Fabric API            │
 │                                                                     │
 │ GET /api/fabric/subscribers/subscriber_1729377893_abc123/          │
-│     addresses/sally-agent                                           │
+│     addresses/hirewire-agent                                           │
 │                                                                     │
 │ Returns: {                                                          │
-│   name: "sally-agent",                                             │
+│   name: "hirewire-agent",                                             │
 │   type: "swml",                                                     │
-│   swml_url: "https://jonnykarate.ngrok.io/swml"                   │
+│   swml_url: "${APP_DOMAIN}/swml"                   │
 │ }                                                                   │
 └──────────────────┬──────────────────────────────────────────────────┘
                    │
 ┌──────────────────▼──────────────────────────────────────────────────┐
 │ Step 3: SignalWire fetches SWML from Python backend                │
 │                                                                     │
-│ GET https://jonnykarate.ngrok.io/swml                              │
+│ GET ${APP_DOMAIN}/swml                              │
 │                                                                     │
 │ Python agent returns SWML document with:                            │
 │ - AI personality/prompt                                             │
@@ -126,7 +126,7 @@ await session.start();  // Start the call
 │ AI decides to call: demo_order_item                                 │
 │                                                                     │
 │ SignalWire calls:                                                   │
-│ POST https://jonnykarate.ngrok.io/swaig/demo_order_item            │
+│ POST ${APP_DOMAIN}/swaig/demo_order_item            │
 │ {                                                                   │
 │   "argument": {                                                     │
 │     "item_name": "large pizza",                                     │
@@ -181,14 +181,14 @@ await session.start();  // Start the call
 **File**: `/web/src/app/api/signalwire/generate-agent/route.js`
 
 ```javascript
-const addressName = 'sally-agent';  // This is the address name
+const addressName = 'hirewire-agent';  // This is the address name
 
 // Creates address in SignalWire:
 POST /api/fabric/subscribers/{subscriberId}/addresses
 {
-  "name": "sally-agent",              // ← This is the address name
+  "name": "hirewire-agent",              // ← This is the address name
   "type": "swml",
-  "swml_url": "https://jonnykarate.ngrok.io/swml"
+  "swml_url": "${APP_DOMAIN}/swml"
 }
 ```
 
@@ -199,7 +199,7 @@ POST /api/fabric/subscribers/{subscriberId}/addresses
 ```javascript
 const session = await client.dial({
     to: agentAddress,  // ← This comes from generate-agent API
-    // agentAddress = "/subscriber_1729377893_abc123/sally-agent"
+    // agentAddress = "/subscriber_1729377893_abc123/hirewire-agent"
     audio: true,
     video: false
 });
@@ -219,7 +219,7 @@ const response = await fetch("/api/signalwire/generate-agent", {
 const data = await response.json();
 
 // data.callTo contains the address to dial
-// Example: "/subscriber_1729377893_abc123/sally-agent"
+// Example: "/subscriber_1729377893_abc123/hirewire-agent"
 setAgentAddress(data.callTo);
 
 // Pass to AdvancedCallControls component
@@ -260,7 +260,7 @@ client.on('session.updated', (session) => {
 
 // 4. Dial the agent
 const call = await client.dial({
-    to: '/subscriber_123/sally-agent',  // Address format
+    to: '/subscriber_123/hirewire-agent',  // Address format
     audio: true,
     video: false,
     userVariables: {
@@ -311,24 +311,24 @@ SignalWire supports three address formats:
 
 ### 1. Public Address
 ```javascript
-to: '/public/sally-agent'
+to: '/public/hirewire-agent'
 // Anyone can dial this address
 // No authentication required
 ```
 
 ### 2. Private Address
 ```javascript
-to: '/private/sally-agent'
+to: '/private/hirewire-agent'
 // Requires authentication
 // Only subscribers with permission can dial
 ```
 
 ### 3. Subscriber Address (Our Implementation)
 ```javascript
-to: '/subscriber_1729377893_abc123/sally-agent'
+to: '/subscriber_1729377893_abc123/hirewire-agent'
 // Format: /{subscriberId}/{addressName}
 // Scoped to specific subscriber
-// Used by Sally Sales
+// Used by HireWire
 ```
 
 ---
@@ -346,9 +346,9 @@ to: '/subscriber_1729377893_abc123/sally-agent'
 
 ## Summary
 
-**Address Name**: `sally-agent` (configured in generate-agent/route.js)
+**Address Name**: `hirewire-agent` (configured in generate-agent/route.js)
 
-**Full Dial Format**: `/{subscriberId}/sally-agent`
+**Full Dial Format**: `/{subscriberId}/hirewire-agent`
 
 **SignalWire Client Code**:
 ```javascript
@@ -360,13 +360,13 @@ client.on('userInput', handleAgentEvent);
 
 // Dial
 const call = await client.dial({
-    to: `/${subscriberId}/sally-agent`,
+    to: `/${subscriberId}/hirewire-agent`,
     audio: true
 });
 
 await call.start();
 ```
 
-**What gets dialed**: The subscriber address created in SignalWire Fabric API that points to `https://jonnykarate.ngrok.io/swml`
+**What gets dialed**: The subscriber address created in SignalWire Fabric API that points to `${APP_DOMAIN}/swml`
 
 This architecture matches Holy Guacamole and all SignalWire documentation examples exactly!
