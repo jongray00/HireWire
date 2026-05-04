@@ -72,3 +72,13 @@ web/agent-credentials.json
 
 # Git worktrees (used during multi-task implementation)
 .worktrees/
+
+# Local SQLite database files
+.data/
+*.db
+*.db-shm
+*.db-wal
+
+# Test coverage
+.coverage
+htmlcov/
