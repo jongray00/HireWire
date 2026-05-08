@@ -1,3 +1,6 @@
+> **Deprecated.** This project has been superseded by [HireWire-AI](https://github.com/jongray00/HireWire-AI).
+> The original HireWire experience is now available there as the default state — toggle "Wizard Mode" off in Settings to match this app's behavior.
+
 # Sally Sales - AI Voice Agent Demo
 
 A complete SignalWire AI voice application demonstrating browser-to-agent WebRTC calling with dynamic SWML configuration.
